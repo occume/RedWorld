@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<sqls>
+	<sql>
+		<![CDATA[
+		SELECT productid FROM pkg_index_main WHERE productid > ? ORDER BY productid ASC;
+		]]>
+	</sql>
+	
+	<sql>
+		<name>OffJobWhenOutDate</name>
+		<value><![CDATA[
+		
+		]]></value>
+	</sql>
+	
+	<sql>
+		<name>RecruitingJobs</name>
+		<value><![CDATA[
+		select * from job where delete_at is null and job_status_id = 2
+		]]></value>
+	</sql>
+	
+	<sql>
+		<name>findSearchJobs</name>
+		<value><![CDATA[
+		select
+		j.id, j.create_at, j.update_at, j.refresh_at, j.refreshed, j.title, j.need, j.sign_up, j.type_id, j.salary, (j.salary * u.weight) as salary_amount, j.salary_unit_id, j.salary_period_id, j.gender_id, j.stick_id, j.start_at, j.end_at, j.store_id,
+		e.id enterprise_id, e.`name` enterprise_name, e.avatar, e.verification_id, org.id organization_id,
+		a.id address_id, a.`name` address, a.city_id, a.region_id, a.longitude, a.latitude, el.level_id, l.labels, ext.is_mvp, ext.batch_id
+		from job j
+		inner join job_type t on t.id = j.type_id
+		inner join enterprise e on e.id = j.enterprise_id
+		inner join enterprise_level_instance el on el.enterprise_id = e.id
+		inner join salary_unit u on u.id = j.salary_unit_id
+		LEFT JOIN (SELECT job_id, GROUP_CONCAT(label_id) as labels FROM job_label GROUP BY job_id)l on l.job_id = j.id
+		INNER join (
+			SELECT
+				*
+			FROM job_address a
+			WHERE
+			a.delete_at is NULL
+		) a on a.job_id = j.id
+		left join job_ext1 ext on ext.job_id = j.id
+		left join (SELECT * FROM store WHERE delete_at IS NULL) store ON store.id = j.store_id
+		LEFT JOIN (SELECT * FROM organization WHERE delete_at IS NULL) org ON org.id = store.organization_id
+
+		where j.delete_at is NULL and t.delete_at is NULL and e.delete_at is NULL
+		and j.job_status_id = 2
+		
+		]]></value>
+	</sql>
+	
+	<sql>
+		<name>ResumeCoords</name>
+		<value><![CDATA[
+		SELECT m.id, r.`name`, r.phone, m.address, e.university_name, t.tm, m.resume_id, m.latitude, m.longitude FROM `resume_intention_address` m
+		INNER JOIN resume r ON r.id = m.resume_id
+		LEFT JOIN resume_education e ON e.resume_id = r.id
+		LEFT JOIN (SELECT a.resume_id, GROUP_CONCAT(CONCAT(a.weekdays, ':',a.start_at, '-', a.end_at), '; ') AS tm FROM (
+			SELECT resume_id, weekdays, CASE WHEN `start` < 30 THEN `start` ELSE FLOOR(`start` / 3600) END AS start_at, CASE WHEN `end` < 30 THEN `end` ELSE FLOOR(`end` / 3600) END AS end_at 
+				FROM `mvp_resume_plan_time` WHERE delete_at IS NULL
+			) a 
+			GROUP BY a.resume_id) t ON t.resume_id = r.id
+		WHERE m.delete_at IS NULL AND m.city_id = 310100 and r.id > 30
+		]]></value>
+	</sql>
+	
+	<sql>
+		<name>DulidaySettings</name>
+		<value><![CDATA[
+		{
+			"settings": {
+				"analysis": {
+					"analyzer": {
+						"comma": {
+							"type": "pattern",
+							"pattern": ","
+						}
+					}
+				}
+			}
+		}
+		]]></value>
+	</sql>
+	
+	<sql>
+		<name>DulidayMapping</name>
+		<value><![CDATA[
+		{
+		    "_all": {
+		        "analyzer": "ik_max_word",
+		        "search_analyzer": "ik_smart",
+		        "term_vector": "no",
+		        "store": "false"
+		    },
+		    "properties": {
+		        "title": {
+		            "type": "text",
+		            "store": "no",
+		            "term_vector": "with_positions_offsets",
+		            "analyzer": "ik_max_word",
+		            "search_analyzer": "ik_smart",
+		            "include_in_all": "true",
+		            "boost": 8
+		        },
+		        "title1": {
+		            "type": "keyword",
+		            "store": "no",
+		            "include_in_all": "true",
+		            "boost": 8
+		        },
+		        "id": {
+		        	"type": "long"
+		        },
+		        "need": {
+		        	"type": "long"
+		        },
+		        "location": {
+		        	"type": "geo_point"
+		        },
+		        "labels": {
+		        	"type": "text",
+		            "store": "no",
+		            "term_vector": "with_positions_offsets",
+		            "analyzer": "comma",
+		            "search_analyzer": "comma",
+		            "include_in_all": "true"
+		        },
+		        "typeId": {
+		        	"type": "text",
+		            "store": "no",
+		            "term_vector": "with_positions_offsets",
+		            "analyzer": "comma",
+		            "search_analyzer": "comma",
+		            "include_in_all": "true"
+		        },
+		        "typeId1": {
+		        	"type": "keyword",
+		            "store": "no",
+		            "include_in_all": "true",
+		            "boost": 8
+		        },
+		        "typeIdV2": {
+		        	"type": "text",
+		            "store": "no",
+		            "analyzer": "comma",
+		            "search_analyzer": "comma"
+		        },
+		        "typeIdV21": {
+		        	"type": "keyword",
+		            "store": "no",
+		            "include_in_all": "true",
+		            "boost": 8
+		        },
+		        "jobDates": {
+		        	"type": "text",
+		            "store": "no",
+		            "term_vector": "with_positions_offsets",
+		            "analyzer": "comma",
+		            "search_analyzer": "comma",
+		            "include_in_all": "true"
+		        },
+		        "startAt": {
+		        	"type": "date",
+		        	"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis",
+		        	"locale": "CN"
+		        },
+		        "endAt": {
+		        	"type": "date",
+		        	"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis",
+		        	"locale": "CN"
+		        },
+		        "refreshAt": {
+		        	"type": "date",
+		        	"format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis",
+		        	"locale": "CN"
+		        },
+		        "batchId": {
+		        	"type": "keyword",
+		            "store": "no",
+		            "include_in_all": "true"
+		        },
+		        "enterpriseName": {
+		            "type": "text",
+		            "store": "no",
+		            "term_vector": "with_positions_offsets",
+		            "include_in_all": "true"
+		        }
+		    }
+		}
+		]]></value>
+	</sql>
+	
+</sqls>

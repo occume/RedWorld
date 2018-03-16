@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.redworld.mapper.ApplyMapper">
+
+	<!-- Result Map -->
+  <resultMap id="BaseResultMap" type="com.redworld.model.Apply">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="job_id" jdbcType="BIGINT" property="jobId" />
+    <result column="auth_id" jdbcType="BIGINT" property="authId" />
+    <result column="status_id" jdbcType="INTEGER" property="statusId" />
+    <result column="reason" jdbcType="VARCHAR" property="reason" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+  </resultMap>
+  
+  <resultMap id="ApplyWithOnlineStar" type="com.redworld.model.ApplyWithOnlineStar">
+  	<result column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gender_id" jdbcType="INTEGER" property="genderId" />
+    <result column="avatar_image_id" jdbcType="VARCHAR" property="avatar" />
+    <result column="status_id" jdbcType="INTEGER" property="statusId" />
+  </resultMap>
+  
+  <resultMap id="ApplyWithAccount" type="com.redworld.model.ApplyWithAccount">
+  	<result column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gender_id" jdbcType="INTEGER" property="genderId" />
+    <result column="avatar_image_id" jdbcType="VARCHAR" property="avatar" />
+    <result column="status_id" jdbcType="INTEGER" property="statusId" />
+  </resultMap>
+  
+  <resultMap id="ApplyWithJob" type="com.redworld.model.ApplyWithJob">
+  	<result column="id" jdbcType="BIGINT" property="id" />
+    <result column="status_id" jdbcType="INTEGER" property="statusId" />
+    <result column="job_id" jdbcType="BIGINT" property="jobId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="price" jdbcType="FLOAT" property="price" />
+    <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="type_name" jdbcType="VARCHAR" property="typeName" />
+    <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+  </resultMap>
+  
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  
+  <sql id="Base_Column_List">
+    id, job_id, auth_id, status_id, reason, type
+  </sql>
+  
+  <select id="selectWithOnlineStar" parameterType="java.lang.Long" resultMap="ApplyWithOnlineStar">
+    select a.id, a.status_id, acc.name, acc.gender_id, acc.avatar_image_name from apply a
+    	left join online_star o on o.auth_id = a.auth_id and o.delete_at is null
+    	left join account acc on acc.auth_id = o.auth_id and acc.delete_at is null
+    	where a.job_id = #{jobId} and a.type = 1
+  </select>
+  
+  <select id="selectWithAccount" parameterType="java.lang.Long" resultMap="ApplyWithOnlineStar">
+    select a.id, a.status_id, acc.name, acc.gender_id, acc.avatar_image_name from apply a
+    	left join online_star o on o.auth_id = a.auth_id and o.delete_at is null
+    	left join account acc on acc.auth_id = o.auth_id and acc.delete_at is null
+    	where a.job_id = #{jobId} and a.type = 1
+  </select>
+  
+  <select id="selectWithJob" resultMap="ApplyWithJob">
+    select a.id, a.status_id, j.id, j.title, j.content, j.price, j.start_time, j.end_time, 
+    	jt.name as type_name, c.name as city_name from apply a
+	   	left join job j on j.id = a.job_id
+	   	left join job_type jt on jt.id = j.job_type_id
+	   	left join city c on c.id = j.city_id
+	   	where a.auth_id = #{authId}
+	   	<if test="typeId != 0">
+	      and a.type = #{typeId}
+	    </if>
+	   	<if test="statusId != null">
+	      and a.status_id = #{statusId}
+	    </if>
+	    <if test="startRow != 0 and pageSize != 0">
+		    limit #{startRow},#{pageSize}
+		</if>
+  </select>
+  
+  <select id="selectByJobOnlineStar" resultMap="BaseResultMap">
+    select * from apply where job_id = #{jobId} and auth_id = #{authId}
+  </select>
+  
+  <select id="selectByExample" parameterType="com.redworld.model.ApplyExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from apply
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from apply
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.redworld.model.ApplyExample">
+    delete from apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.redworld.model.Apply">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into apply (job_id, auth_id, status_id, 
+      reason, type)
+    values (#{jobId,jdbcType=BIGINT}, #{authId,jdbcType=BIGINT}, #{statusId,jdbcType=INTEGER}, 
+      #{reason,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.redworld.model.Apply">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into apply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        job_id,
+      </if>
+      <if test="authId != null">
+        auth_id,
+      </if>
+      <if test="statusId != null">
+        status_id,
+      </if>
+      <if test="reason != null">
+        reason,
+      </if>
+      <if test="type != null">
+        reason,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jobId != null">
+        #{jobId,jdbcType=BIGINT},
+      </if>
+      <if test="authId != null">
+        #{authId,jdbcType=BIGINT},
+      </if>
+      <if test="statusId != null">
+        #{statusId,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.redworld.model.ApplyExample" resultType="java.lang.Long">
+    select count(*) from apply
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update apply
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.jobId != null">
+        job_id = #{record.jobId,jdbcType=BIGINT},
+      </if>
+      <if test="record.authId != null">
+        auth_id = #{record.authId,jdbcType=BIGINT},
+      </if>
+      <if test="record.statusId != null">
+        status_id = #{record.statusId,jdbcType=INTEGER},
+      </if>
+      <if test="record.reason != null">
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update apply
+    set id = #{record.id,jdbcType=BIGINT},
+      job_id = #{record.jobId,jdbcType=BIGINT},
+      auth_id = #{record.authId,jdbcType=BIGINT},
+      status_id = #{record.statusId,jdbcType=INTEGER},
+      reason = #{record.reason,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.redworld.model.Apply">
+    update apply
+    <set>
+      <if test="jobId != null">
+        job_id = #{jobId,jdbcType=BIGINT},
+      </if>
+      <if test="authId != null">
+        auth_id = #{authId,jdbcType=BIGINT},
+      </if>
+      <if test="statusId != null">
+        status_id = #{statusId,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null">
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.redworld.model.Apply">
+    update apply
+    set job_id = #{jobId,jdbcType=BIGINT},
+      auth_id = #{authId,jdbcType=BIGINT},
+      status_id = #{statusId,jdbcType=INTEGER},
+      reason = #{reason,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

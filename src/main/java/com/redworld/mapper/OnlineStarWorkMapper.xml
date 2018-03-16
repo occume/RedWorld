@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.redworld.mapper.OnlineStarWorkMapper">
+  <resultMap id="BaseResultMap" type="com.redworld.model.OnlineStarWork">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="os_id" jdbcType="BIGINT" property="osId" />
+    <result column="image_id" jdbcType="BIGINT" property="imageId" />
+    <result column="type_id" jdbcType="INTEGER" property="typeId" />
+    <result column="explain" jdbcType="VARCHAR" property="explain" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, os_id, image_id, type_id, `explain`
+  </sql>
+  
+  <select id="selectPopularWorks" resultType="OnlineStarWork">
+  	select w.os_id as osId, i.`name` as imageName, w.`explain`, w.type_id as typeId from online_star_work w 
+	join(
+    select os.id from online_star os 
+    	order by os.fans_count desc limit 6) o ON o.id = w.os_id
+	left join image i on i.id = w.image_id
+	GROUP BY w.os_id
+  </select>
+  
+  <select id="selectFreshWorks" resultType="OnlineStarWork">
+  	select w.os_id as osId, i.`name` as imageName, w.`explain`, w.type_id as typeId from online_star_work w 
+	join(
+    select os.id from online_star os 
+    	order by os.update_at desc limit 6) o ON o.id = w.os_id
+	left join image i on i.id = w.image_id
+	GROUP BY w.os_id
+  </select>
+  
+  <select id="selectWorksByOsId" resultType="OnlineStarWork">
+  	select w.os_id as osId, img.`name` as imageName, w.`explain`, w.type_id as typeId 
+  		from online_star_work w 
+  		left join image img on img.id = w.image_id
+  		where w.os_id = #{osId}
+  		<if test="typeId != 0">
+	      and w.type_id = #{typeId}
+	    </if>
+  </select>
+  
+  <select id="selectWorksOfBroker" resultType="OnlineStarWork">
+  	select w.os_id as osId, img.`name` as imageName, w.`explain`, w.type_id as typeId 
+  		from online_star_work w 
+  		left join image img on img.id = w.image_id
+  		where w.os_id in 
+  		<foreach collection="osList" index="index" item="item" open="(" separator="," close=")">  
+	        #{item}  
+	    </foreach> 
+  		<if test="typeId != 0">
+	      and w.type_id = #{typeId}
+	    </if>
+  </select>
+  
+  <select id="selectByExample" parameterType="com.redworld.model.OnlineStarWorkExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from online_star_work
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from online_star_work
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from online_star_work
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.redworld.model.OnlineStarWorkExample">
+    delete from online_star_work
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.redworld.model.OnlineStarWork">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into online_star_work (os_id, image_id, type_id, 
+      `explain`)
+    values (#{osId,jdbcType=BIGINT}, #{imageId,jdbcType=BIGINT}, #{typeId,jdbcType=INTEGER}, 
+      #{explain,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.redworld.model.OnlineStarWork">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into online_star_work
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="osId != null">
+        os_id,
+      </if>
+      <if test="imageId != null">
+        image_id,
+      </if>
+      <if test="typeId != null">
+        type_id,
+      </if>
+      <if test="explain != null">
+        explain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="osId != null">
+        #{osId,jdbcType=BIGINT},
+      </if>
+      <if test="imageId != null">
+        #{imageId,jdbcType=BIGINT},
+      </if>
+      <if test="typeId != null">
+        #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="explain != null">
+        #{explain,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.redworld.model.OnlineStarWorkExample" resultType="java.lang.Long">
+    select count(*) from online_star_work
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update online_star_work
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.osId != null">
+        os_id = #{record.osId,jdbcType=BIGINT},
+      </if>
+      <if test="record.imageId != null">
+        image_id = #{record.imageId,jdbcType=BIGINT},
+      </if>
+      <if test="record.typeId != null">
+        type_id = #{record.typeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.explain != null">
+        explain = #{record.explain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update online_star_work
+    set id = #{record.id,jdbcType=BIGINT},
+      os_id = #{record.osId,jdbcType=BIGINT},
+      image_id = #{record.imageId,jdbcType=BIGINT},
+      type_id = #{record.typeId,jdbcType=INTEGER},
+      explain = #{record.explain,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.redworld.model.OnlineStarWork">
+    update online_star_work
+    <set>
+      <if test="osId != null">
+        os_id = #{osId,jdbcType=BIGINT},
+      </if>
+      <if test="imageId != null">
+        image_id = #{imageId,jdbcType=BIGINT},
+      </if>
+      <if test="typeId != null">
+        type_id = #{typeId,jdbcType=INTEGER},
+      </if>
+      <if test="explain != null">
+        explain = #{explain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.redworld.model.OnlineStarWork">
+    update online_star_work
+    set os_id = #{osId,jdbcType=BIGINT},
+      image_id = #{imageId,jdbcType=BIGINT},
+      type_id = #{typeId,jdbcType=INTEGER},
+      explain = #{explain,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

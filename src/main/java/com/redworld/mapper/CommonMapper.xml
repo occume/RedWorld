@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.redworld.mapper.CommonMapper">
+
+	<select id="bankcardTypeList" parameterType="String" resultType="WalletBankcardType">  
+		select id, name, bank_name as bankName, prefix from wallet_bankcard_type
+			where prefix like '%${prefix}%' limit 20
+	</select>
+	
+	<select id="bannerImageList" resultType="BannerImage">  
+		select b.id, i.name as imageName, b.link from banner b
+			left join image i on b.image_id = i.id
+	</select>
+
+	<select id="jobTypeList" resultType="JobType">  
+		select * from `job_type`
+	</select>
+
+	<select id="groupList" resultType="Group">  
+		select * from `group`
+	</select>
+  
+	<select id="cityList" resultType="City">  
+		select * from city
+	</select>
+	
+	<select id="cityListByProvinceId" parameterType="int" resultType="City">  
+		select * from city where province_id = #{provinceId}
+	</select>
+	
+	<select id="districtListByCityId" parameterType="int" resultType="District">  
+		select * from district where city_id = #{cityId}
+	</select>
+	
+	<select id="provinceList" resultType="Province">  
+		select * from province
+	</select>
+
+	<update id="setGroup" >  
+		update account set group_id = #{groupId} where auth_id = #{authId}
+	</update>
+	
+	<insert id="feedbackAdd" parameterType="Feedback">
+		insert into feedback (auth_id, content, contact) values (#{authId}, #{content}, #{contact})
+	</insert>
+	
+	<insert id="createOrder" parameterType="Order">
+		insert into `order` (trade_no, job_id, auth_id, advance_amount, remark, status_id) values 
+		(#{tradeNo}, #{jobId}, #{authId}, #{advanceAmount}, #{remark}, 1)
+	</insert>
+	
+	<update id="updateOrder" parameterType="Order">
+		update `order` set job_id = #{jobId}, result = #{result} where trade_no = #{tradeNo}
+	</update>
+	
+	<update id="updateJobStatus">
+		update `job` set status_id = #{statusId} where id = #{jobId}
+	</update>
+</mapper>

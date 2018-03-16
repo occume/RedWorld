@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.redworld.auth.mapper.AccountMapper">
+	
+	<resultMap id="accResultMap" type="Account">   
+        <id property="id" column="id"/>   
+        <result property="authId" column="auth_id"/>  
+        <result property="provinceId" column="province_id"/>   
+		<result property="cityId" column="city_id"/>   
+	</resultMap> 
+
+	<insert id="save" parameterType="Account">  
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+	      SELECT LAST_INSERT_ID()
+	    </selectKey>
+		INSERT INTO account (name, city_id, province_id, gender) VALUES (#{name}, #{cityId}, #{provinceId}, #{gender})
+	</insert>
+  
+	<select id="get" parameterType="long" resultType="Account" resultMap="accResultMap">  
+		select * from account where auth_id = #{authId}
+	</select>
+
+	<update id="setGroup" >  
+		update account set group_id = #{groupId} where auth_id = #{authId}
+	</update>
+	
+	<update id="updateByPrimaryKey" parameterType="com.redworld.auth.model.Account">
+    update account
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="provinceId != null">
+        province_id = #{provinceId,jdbcType=INTEGER},
+      </if>
+      <if test="provinceId != null">
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="provinceId != null">
+        gender = #{gender}
+      </if>
+    </set> 
+    where auth_id = #{authId,jdbcType=BIGINT}
+  </update>
+</mapper>
