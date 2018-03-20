@@ -29,6 +29,7 @@ public class Constant {
 		public static final int ABOLISH = 4;
 		public static final int COMPLETE = 5;
 		public static final int NO_PASS = 6;
+		public static final int APPLY_ABOLISH = 7;
 	}
 	
 	public static class ApplyType{

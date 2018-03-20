@@ -154,4 +154,17 @@ public class MerchantController extends BaseController{
 		
     	return Result.OK;
 	}
+	
+	@RequestMapping(value = "/job/apply/handle", produces = TEXT, method = RequestMethod.POST)
+	@ResponseBody
+    public Object applyHandle(HttpServletRequest request, @RequestBody Map<String, Object> map){
+		checkAndGetAuth(request);
+		
+		long applyId = getParamLong("apply_id", map);
+		int statusId = getParamInt("status_id", map);
+//		Apply apply = applyService.getById(applyId);
+		applyService.handleApply(applyId, statusId);
+		
+    	return Result.OK;
+	}
 }
