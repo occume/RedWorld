@@ -29,7 +29,7 @@ public interface ApplyMapper {
     
     List<ApplyWithOnlineStar> selectWithOnlineStar(@Param("jobId")Long jobId);
     
-    List<ApplyWithAccount> selectWithAccount(@Param("jobId")Long jobId);
+    List<ApplyWithAccount> selectWithAccount(@Param("jobId")Long jobId, @Param("statusId")Integer statusId);
     
     List<ApplyWithJob> selectWithJob(@Param("startRow")int startRow, @Param("pageSize")int pageSize,
     		@Param("authId")Long authId, @Param("statusId")Integer statusId,

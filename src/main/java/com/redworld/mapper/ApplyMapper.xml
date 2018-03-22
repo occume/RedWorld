@@ -111,11 +111,14 @@
     	where a.job_id = #{jobId} and a.type = 1
   </select>
   
-  <select id="selectWithAccount" parameterType="java.lang.Long" resultMap="ApplyWithOnlineStar">
+  <select id="selectWithAccount"  resultMap="ApplyWithOnlineStar">
     select a.id, a.status_id, acc.name, acc.gender_id, acc.avatar_image_name from apply a
     	left join online_star o on o.auth_id = a.auth_id and o.delete_at is null
     	left join account acc on acc.auth_id = o.auth_id and acc.delete_at is null
-    	where a.job_id = #{jobId} and a.type = 1
+    	where a.type = 1 and a.job_id = #{jobId} 
+    	<if test="statusId != null and statusId != 0">
+	      and a.status_id = #{statusId}
+	    </if>
   </select>
   
   <select id="selectWithJob" resultMap="ApplyWithJob">

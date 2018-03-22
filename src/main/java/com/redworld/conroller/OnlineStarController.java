@@ -72,12 +72,19 @@ public class OnlineStarController extends BaseController{
     public Object profile(HttpServletRequest request, @RequestBody Map<String, Object> map){
 		OnlineStar os;
 		long authId = getParamLong("auth_id", map);
-		if(authId == 0){
-			Account account = checkAndGetAuth(request);
-			os = osService.getByAuthId(account.getAuthId());
+		long osId = getParamLong("os_id", map);
+	
+		if(authId != 0){
+			os = osService.getByAuthId(authId);
 		}
 		else{
-			os = osService.getByAuthId(authId);
+			if(osId != 0){
+				os = osService.getByOsId(osId);
+			}
+			else{
+				Account account = checkAndGetAuth(request);
+				os = osService.getByAuthId(account.getAuthId());
+			}
 		}
     	return Result.ok(os);
 	}

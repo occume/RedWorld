@@ -49,8 +49,8 @@ public class ApplyService {
 		return applyMapper.selectWithJob(startRow, pageSize, authId, statusId, typeId);
 	}
 	
-	public List<ApplyWithAccount> selectWithAccount(long jobId){
-		return applyMapper.selectWithAccount(jobId);
+	public List<ApplyWithAccount> selectWithAccount(long jobId, int statusId){
+		return applyMapper.selectWithAccount(jobId, statusId);
 	}
 	
 	public List<ApplyWithOnlineStar> selectWithOnlineStar(long jobId){
