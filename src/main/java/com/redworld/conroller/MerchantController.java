@@ -122,13 +122,13 @@ public class MerchantController extends BaseController{
 	
 	@RequestMapping(value = "/job/apply/list", method = RequestMethod.POST)
 	@ResponseBody
+
     public Object jobApplyList(HttpServletRequest request, @RequestBody Map<String, Object> map){
 		Account account = checkAndGetAuth(request);
 //		Merchant merchant = getProfile(account);
 		long jobId = getParamLong("job_id", map);
 		int statusId = getParamInt("status_id", map);
 		List<ApplyWithAccount> data = applyService.selectWithAccount(jobId, statusId);
-		
     	return Result.ok(data);
 	}
 	
@@ -152,6 +152,19 @@ public class MerchantController extends BaseController{
 		long applyId = map.get("apply_id");
 		Apply apply = applyService.getById(applyId);
 		applyService.handleApply(applyId, Constant.ApplyStatus.NO_PASS);
+		
+    	return Result.OK;
+	}
+	
+	@RequestMapping(value = "/job/apply/handle", produces = TEXT, method = RequestMethod.POST)
+	@ResponseBody
+    public Object applyHandle(HttpServletRequest request, @RequestBody Map<String, Object> map){
+		checkAndGetAuth(request);
+		
+		long applyId = getParamLong("apply_id", map);
+		int statusId = getParamInt("status_id", map);
+//		Apply apply = applyService.getById(applyId);
+		applyService.handleApply(applyId, statusId);
 		
     	return Result.OK;
 	}
