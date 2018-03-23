@@ -126,13 +126,16 @@ public class AccountController extends BaseController{
 			OnlineStar os = new OnlineStar();
 			os.setAuthId(account.getAuthId());
 			os.setAccountId(account.getId());
-			osService.save(os);
-			/**
-			 * Create Wallet
-			 */
-			Wallet wallet = new Wallet();
-			wallet.setAuthId(account.getAuthId());
-			walletService.insert(wallet);
+			OnlineStar dbOS = osService.getByAuthId(account.getAuthId());
+			if(dbOS == null){
+				osService.save(os);
+				/**
+				 * Create Wallet
+				 */
+				Wallet wallet = new Wallet();
+				wallet.setAuthId(account.getAuthId());
+				walletService.insert(wallet);
+			}
 		}
 		else if(groupId == GroupType.MERCHANT){
 			/**

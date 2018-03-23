@@ -122,7 +122,7 @@
   </select>
   
   <select id="selectWithJob" resultMap="ApplyWithJob">
-    select a.id, a.status_id, j.id, j.title, j.content, j.price, j.start_time, j.end_time, 
+    select a.id, a.status_id, a.job_id, j.title, j.content, j.price, j.start_time, j.end_time, 
     	jt.name as type_name, c.name as city_name from apply a
 	   	left join job j on j.id = a.job_id
 	   	left join job_type jt on jt.id = j.job_type_id
