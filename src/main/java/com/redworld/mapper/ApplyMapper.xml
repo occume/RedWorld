@@ -39,6 +39,9 @@
     <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
     <result column="type_name" jdbcType="VARCHAR" property="typeName" />
     <result column="city_name" jdbcType="VARCHAR" property="cityName" />
+    <result column="job_type_id" jdbcType="INTEGER" property="jobTypeId" />
+    <result column="gender_id" jdbcType="INTEGER" property="genderId" />
+    <result column="expect_count" jdbcType="INTEGER" property="expectCount" />
   </resultMap>
   
   <sql id="Example_Where_Clause">
@@ -122,7 +125,7 @@
   </select>
   
   <select id="selectWithJob" resultMap="ApplyWithJob">
-    select a.id, a.status_id, a.job_id, j.title, j.content, j.price, j.start_time, j.end_time, 
+    select a.id, a.status_id, a.job_id, j.title, j.content, j.price, j.start_time, j.end_time, j.job_type_id, j.gender_id, j.expect_count,
     	jt.name as type_name, c.name as city_name from apply a
 	   	left join job j on j.id = a.job_id
 	   	left join job_type jt on jt.id = j.job_type_id
@@ -131,7 +134,7 @@
 	   	<if test="typeId != 0">
 	      and a.type = #{typeId}
 	    </if>
-	   	<if test="statusId != null">
+	   	<if test="statusId != 0">
 	      and a.status_id = #{statusId}
 	    </if>
 	    <if test="startRow != 0 and pageSize != 0">
