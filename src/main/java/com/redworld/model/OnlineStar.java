@@ -11,13 +11,13 @@ public class OnlineStar {
     private Long authId;
 
     @JsonProperty("online_live_price")
-    private Float onlineLivePrice = 0.0f;
+    private Float onlineLivePrice;
 
     @JsonProperty("offline_live_price")
-    private Float offlineLivePrice = 0.0f;
+    private Float offlineLivePrice;
 
     @JsonProperty("brand_spoke_price")
-    private Float brandSpokePrice = 0.0f;
+    private Float brandSpokePrice;
 
     private String platform;
 

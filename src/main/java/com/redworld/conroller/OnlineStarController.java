@@ -59,7 +59,7 @@ public class OnlineStarController extends BaseController{
 	 */
 	@RequestMapping(value = "/profile/update", method = RequestMethod.POST)
 	@ResponseBody
-    public Object profileUpdate(HttpServletRequest request, @Valid @RequestBody OnlineStar os){
+    public Object profileUpdate(HttpServletRequest request, @RequestBody OnlineStar os){
 		checkAndGetAuth(request);
 		LOG.info("{}", os);
 		os.setAuthId(null);
