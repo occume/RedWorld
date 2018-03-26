@@ -25,13 +25,13 @@ public class OnlineStar {
     private String platformName;
 
     @JsonProperty("fans_count")
-    private Integer fansCount = 0;
+    private Integer fansCount;
 
     @JsonProperty("gift_to_money")
-    private Float giftToMoney = 0.0f;
+    private Float giftToMoney;
     
     @JsonProperty("play_amount")
-    private Long playAmount = 0L;
+    private Long playAmount;
 
     private Float height;
 
