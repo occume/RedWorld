@@ -30,6 +30,15 @@ public class ApplyWithJob {
 	@JsonProperty("city_name")
 	private String cityName;
 	
+	@JsonProperty("job_type_id")
+	private int jobTypeId;
+	
+	@JsonProperty("gender_id")
+	private int genderId;
+	
+	@JsonProperty("expect_count")
+	private int expectCount;
+	
 	public String getTitle() {
 		return title;
 	}
