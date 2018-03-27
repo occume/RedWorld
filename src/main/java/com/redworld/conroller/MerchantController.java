@@ -77,6 +77,7 @@ public class MerchantController extends BaseController{
 		
 		if(job.getOsList() != null){
 			for(Account acc: job.getOsList()){
+				System.out.println(acc);
 				long jobId = job.getId();
 				Apply apply = Apply.newApply(jobId, acc.getAuthId());
 				if(applyService.exist(apply)){

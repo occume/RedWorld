@@ -14,6 +14,7 @@ public class Account {
 	@GeneratedValue
 	private long id;
 	
+	@JsonProperty("auth_id")
 	private long authId;
 	
 	@NotNull
