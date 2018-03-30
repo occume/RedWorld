@@ -1,6 +1,7 @@
 package com.redworld.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class WalletBankcardExample {
@@ -164,62 +165,122 @@ public class WalletBankcardExample {
             return (Criteria) this;
         }
 
-        public Criteria andauthIdIsNull() {
+        public Criteria andDeleteAtIsNull() {
+            addCriterion("delete_at is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtIsNotNull() {
+            addCriterion("delete_at is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtEqualTo(Date value) {
+            addCriterion("delete_at =", value, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtNotEqualTo(Date value) {
+            addCriterion("delete_at <>", value, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtGreaterThan(Date value) {
+            addCriterion("delete_at >", value, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtGreaterThanOrEqualTo(Date value) {
+            addCriterion("delete_at >=", value, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtLessThan(Date value) {
+            addCriterion("delete_at <", value, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtLessThanOrEqualTo(Date value) {
+            addCriterion("delete_at <=", value, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtIn(List<Date> values) {
+            addCriterion("delete_at in", values, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtNotIn(List<Date> values) {
+            addCriterion("delete_at not in", values, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtBetween(Date value1, Date value2) {
+            addCriterion("delete_at between", value1, value2, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andDeleteAtNotBetween(Date value1, Date value2) {
+            addCriterion("delete_at not between", value1, value2, "deleteAt");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuthIdIsNull() {
             addCriterion("auth_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdIsNotNull() {
+        public Criteria andAuthIdIsNotNull() {
             addCriterion("auth_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdEqualTo(Long value) {
+        public Criteria andAuthIdEqualTo(Long value) {
             addCriterion("auth_id =", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdNotEqualTo(Long value) {
+        public Criteria andAuthIdNotEqualTo(Long value) {
             addCriterion("auth_id <>", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdGreaterThan(Long value) {
+        public Criteria andAuthIdGreaterThan(Long value) {
             addCriterion("auth_id >", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdGreaterThanOrEqualTo(Long value) {
+        public Criteria andAuthIdGreaterThanOrEqualTo(Long value) {
             addCriterion("auth_id >=", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdLessThan(Long value) {
+        public Criteria andAuthIdLessThan(Long value) {
             addCriterion("auth_id <", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdLessThanOrEqualTo(Long value) {
+        public Criteria andAuthIdLessThanOrEqualTo(Long value) {
             addCriterion("auth_id <=", value, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdIn(List<Long> values) {
+        public Criteria andAuthIdIn(List<Long> values) {
             addCriterion("auth_id in", values, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdNotIn(List<Long> values) {
+        public Criteria andAuthIdNotIn(List<Long> values) {
             addCriterion("auth_id not in", values, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdBetween(Long value1, Long value2) {
+        public Criteria andAuthIdBetween(Long value1, Long value2) {
             addCriterion("auth_id between", value1, value2, "authId");
             return (Criteria) this;
         }
 
-        public Criteria andauthIdNotBetween(Long value1, Long value2) {
+        public Criteria andAuthIdNotBetween(Long value1, Long value2) {
             addCriterion("auth_id not between", value1, value2, "authId");
             return (Criteria) this;
         }

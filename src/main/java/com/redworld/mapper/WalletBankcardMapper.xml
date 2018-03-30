@@ -6,6 +6,7 @@
     <result column="auth_id" jdbcType="BIGINT" property="authId" />
     <result column="card_type_id" jdbcType="INTEGER" property="cardTypeId" />
     <result column="card_owner" jdbcType="VARCHAR" property="cardOwner" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
     <result column="default_id" jdbcType="INTEGER" property="defaultId" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.redworld.model.WalletBankcard">
@@ -70,7 +71,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, auth_id, card_type_id, card_owner, default_id
+    id, auth_id, card_type_id, card_owner, card_number, default_id
   </sql>
   <sql id="Blob_Column_List">
     card_number

@@ -180,10 +180,10 @@ public class OnlineStarController extends BaseController{
 //		OnlineStar os = getProfile(auth);
 		System.out.println(account);
 		int page = getParamInt("page", map);
-//		int statusId = getParamInt("status_id", map);
+		int statusId = getParamInt("status_id", map);
 		int startRow = page * Constant.PAGE_SIZE;
 		List<ApplyWithJob> applyList = 
-				applyService.getWithJob(startRow, account.getAuthId(), 1, 2);
+				applyService.getWithJob(startRow, account.getAuthId(), statusId, 2);
     	return Result.ok(applyList);
 	}
 	

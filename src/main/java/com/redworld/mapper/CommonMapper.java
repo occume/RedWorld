@@ -12,7 +12,9 @@ import com.redworld.model.Group;
 import com.redworld.model.JobType;
 import com.redworld.model.Order;
 import com.redworld.model.Province;
+import com.redworld.model.WalletBankcard;
 import com.redworld.model.WalletBankcardType;
+import com.redworld.model.response.WalletBankcardResponse;
 
 public interface CommonMapper {
 
@@ -39,4 +41,6 @@ public interface CommonMapper {
 	int updateOrder(Order order);
 	
 	int updateJobStatus(@Param("jobId") long jobId, @Param("statusId") long statusId);
+	
+	List<WalletBankcardResponse> bankcardList(WalletBankcard bankCard);
 }

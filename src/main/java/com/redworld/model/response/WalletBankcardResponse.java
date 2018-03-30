@@ -1,8 +1,9 @@
-package com.redworld.model;
+package com.redworld.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class WalletBankcard {
+public class WalletBankcardResponse {
+	
     private Integer id;
 
     private Long authId;
@@ -13,13 +14,14 @@ public class WalletBankcard {
     @JsonProperty("card_owner")
     private String cardOwner;
 
-    private Integer defaultId;
-
     @JsonProperty("card_number")
     private String cardNumber;
     
-    @JsonProperty("v_code")
-    private String vCode;
+    @JsonProperty("card_name")
+    private String cardName;
+    
+    @JsonProperty("bank_name")
+    private String bankName;
 
     public Integer getId() {
         return id;
@@ -53,14 +55,6 @@ public class WalletBankcard {
         this.cardOwner = cardOwner == null ? null : cardOwner.trim();
     }
 
-    public Integer getDefaultId() {
-        return defaultId;
-    }
-
-    public void setDefaultId(Integer defaultId) {
-        this.defaultId = defaultId;
-    }
-
     public String getCardNumber() {
         return cardNumber;
     }
@@ -69,11 +63,11 @@ public class WalletBankcard {
         this.cardNumber = cardNumber == null ? null : cardNumber.trim();
     }
 
-	public String getvCode() {
-		return vCode;
+	public String getCardName() {
+		return cardName;
 	}
 
-	public void setvCode(String vCode) {
-		this.vCode = vCode;
+	public void setCardName(String cardName) {
+		this.cardName = cardName;
 	}
 }

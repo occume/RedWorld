@@ -71,18 +71,18 @@
   </sql>
   
   <select id="selectPopularWorks" resultType="OnlineStarWork">
-  	select w.os_id as osId, i.`name` as imageName, w.`explain`, w.type_id as typeId from online_star_work w 
+  	select w.os_id as osId, o.auth_id as authId, i.`name` as imageName, w.`explain`, w.type_id as typeId from online_star_work w 
 	join(
-    select os.id from online_star os 
+    select os.id, os.auth_id from online_star os where auth_id > 0
     	order by os.fans_count desc limit 6) o ON o.id = w.os_id
 	left join image i on i.id = w.image_id
 	GROUP BY w.os_id
   </select>
   
   <select id="selectFreshWorks" resultType="OnlineStarWork">
-  	select w.os_id as osId, i.`name` as imageName, w.`explain`, w.type_id as typeId from online_star_work w 
+  	select w.os_id as osId, o.auth_id as authId, i.`name` as imageName, w.`explain`, w.type_id as typeId from online_star_work w 
 	join(
-    select os.id from online_star os 
+    select os.id, os.auth_id from online_star os where auth_id > 0
     	order by os.update_at desc limit 6) o ON o.id = w.os_id
 	left join image i on i.id = w.image_id
 	GROUP BY w.os_id

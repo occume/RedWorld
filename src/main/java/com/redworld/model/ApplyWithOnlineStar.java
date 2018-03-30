@@ -10,11 +10,14 @@ public class ApplyWithOnlineStar {
 	@JsonProperty("gender_id")
 	private int genderId;
 	
-	@JsonProperty("avatar_image_id")
-	private int avatarImageId;
+	@JsonProperty("avatar_image_name")
+	private String avatarImageName;
 	
 	@JsonProperty("status_id")
 	private int statusId;
+	
+	@JsonProperty("auth_id")
+	private int authId;
 
 	public String getName() {
 		return name;
@@ -40,12 +43,20 @@ public class ApplyWithOnlineStar {
 		this.genderId = genderId;
 	}
 
-	public int getAvatarImageId() {
-		return avatarImageId;
+	public String getAvatarImageName() {
+		return avatarImageName;
 	}
 
-	public void setAvatarImageId(int avatarImageId) {
-		this.avatarImageId = avatarImageId;
+	public void setAvatarImageName(String avatarImageName) {
+		this.avatarImageName = avatarImageName;
+	}
+
+	public int getAuthId() {
+		return authId;
+	}
+
+	public void setAuthId(int authId) {
+		this.authId = authId;
 	}
 
 	public int getStatusId() {

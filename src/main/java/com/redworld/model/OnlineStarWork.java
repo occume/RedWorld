@@ -19,6 +19,9 @@ public class OnlineStarWork {
     
     @JsonProperty("image_name")
     private String imageName;
+    
+    @JsonProperty("auth_id")
+    private Integer authId;
 
     public Long getId() {
         return id;
@@ -66,6 +69,14 @@ public class OnlineStarWork {
 
 	public void setImageName(String imageName) {
 		this.imageName = imageName;
+	}
+
+	public Integer getAuthId() {
+		return authId;
+	}
+
+	public void setAuthId(Integer authId) {
+		this.authId = authId;
 	}
     
 }

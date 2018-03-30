@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.redworld.mapper.CommonMapper;
 import com.redworld.mapper.OnlineStarMapper;
 import com.redworld.mapper.WalletBankcardMapper;
 import com.redworld.mapper.WalletMapper;
@@ -14,14 +15,14 @@ import com.redworld.model.Wallet;
 import com.redworld.model.WalletBankcard;
 import com.redworld.model.WalletBankcardExample;
 import com.redworld.model.WalletExample;
+import com.redworld.model.response.WalletBankcardResponse;
 
 @Service
 public class WalletService {
 
-	@Autowired
-	private WalletMapper walletMapper;
-	@Autowired
-	private WalletBankcardMapper bankcardMapper;
+	@Autowired private WalletMapper walletMapper;
+	@Autowired private WalletBankcardMapper bankcardMapper;
+	@Autowired private CommonMapper commonMapper;
 	
 	public int insert(Wallet wallet){
 		return walletMapper.insert(wallet);
@@ -44,11 +45,15 @@ public class WalletService {
 	public List<WalletBankcard> getBankcardList(long authId){
 		WalletBankcardExample example = new WalletBankcardExample();
 		WalletBankcardExample.Criteria c = example.createCriteria();
-		c.andauthIdEqualTo(authId);
+		c.andAuthIdEqualTo(authId);
 		return bankcardMapper.selectByExample(example);
 	}
 	
-	public int addBankcard(WalletBankcard bankcard){
-		return bankcardMapper.insert(bankcard);
+	public int addBankcard(WalletBankcard bankcard){ 
+		return bankcardMapper.insertSelective(bankcard);
+	}
+	
+	public List<WalletBankcardResponse> getBankcardList(WalletBankcard bankcard){ 
+		return commonMapper.bankcardList(bankcard);
 	}
 }

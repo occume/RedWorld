@@ -22,6 +22,8 @@ public class Constant {
 		public static final String TOKEN 		= "token";
 	}
 	
+//	0 全部；1 草稿；2 进行中；3 完成
+	
 	public static class ApplyStatus{
 		public static final int APPLIED = 1;
 		public static final int RUNNING = 2;

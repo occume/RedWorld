@@ -107,11 +107,12 @@ public class MerchantController extends BaseController{
 	@ResponseBody
     public Object jobList(HttpServletRequest request, @RequestBody Map<String, Object> map){
 		Account account = checkAndGetAuth(request);
-		Merchant merchant = getProfile(account);
+//		Merchant merchant = getProfile(account);
 		int page = getParamInt("page", map);
 		Result result;
-		if(merchant != null){
+		if(account != null){
 			LOG.info("{}", map);
+			map.put("auth_id", account.getAuthId());
 			List<JobResponse> data = jobService.jobListOfMerchant(page, map);
 			result = Result.ok(data);
 		}
@@ -123,12 +124,12 @@ public class MerchantController extends BaseController{
 	
 	@RequestMapping(value = "/job/apply/list", method = RequestMethod.POST)
 	@ResponseBody
-
     public Object jobApplyList(HttpServletRequest request, @RequestBody Map<String, Object> map){
 		Account account = checkAndGetAuth(request);
 //		Merchant merchant = getProfile(account);
 		long jobId = getParamLong("job_id", map);
 		int statusId = getParamInt("status_id", map);
+		System.out.println(statusId);
 		List<ApplyWithAccount> data = applyService.selectWithAccount(jobId, statusId);
     	return Result.ok(data);
 	}

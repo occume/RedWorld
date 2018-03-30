@@ -18,6 +18,9 @@ public class OnlineStarRecommend {
 	
 	@JsonProperty("avatar_image_name")
 	private String avatarImageName;
+	
+	@JsonProperty("auth_id")
+	private long authId;
 
 	public long getId() {
 		return id;
@@ -49,6 +52,14 @@ public class OnlineStarRecommend {
 
 	public void setAvatarImageName(String avatarImageName) {
 		this.avatarImageName = avatarImageName;
+	}
+
+	public long getAuthId() {
+		return authId;
+	}
+
+	public void setAuthId(long authId) {
+		this.authId = authId;
 	}
 
 	@Override

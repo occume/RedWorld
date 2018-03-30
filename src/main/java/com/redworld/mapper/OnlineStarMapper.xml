@@ -25,6 +25,7 @@
     <result column="os_id" jdbcType="BIGINT" property="osId" />
     <result column="name" property="name" />
     <result column="avatar_image_name" property="avatarImageName" />
+    <result column="auth_id" jdbcType="BIGINT" property="authId" />
   </resultMap>
   
   <sql id="Example_Where_Clause">
@@ -130,20 +131,26 @@
     select acc.auth_id as authId, acc.avatar_image_name as avatarImageName, 
     	acc.gender_id as genderId, acc.name from online_star os 
     	left join account acc on acc.auth_id = os.auth_id
-    	where acc.city_id = #{cityId}
+    	where os.auth_id > 0 acc.city_id = #{cityId}
 		limit #{startRow}, #{pageSize}
   </select>
   
   <select id="selectPopular" resultMap="RecommendMap">
-    select os.id as os_id, a.name, a.avatar_image_name from online_star os 
-    	left join account a on a.id = os.auth_id
-    	order by os.fans_count desc limit 6
+    select os.id as os_id, a.name, a.avatar_image_name, a.auth_id
+    	from online_star os 
+    	left join account a on a.auth_id = os.auth_id
+    	where os.auth_id > 0
+    	order by os.fans_count desc 
+    	limit 6
   </select>
   
   <select id="selectFresh" resultMap="RecommendMap">
-    select os.id as os_id, a.name, a.avatar_image_name from online_star os 
-    	left join account a on a.id = os.auth_id
-    	order by os.update_at desc limit 6
+    select os.id as os_id, a.name, a.avatar_image_name, a.auth_id
+    	from online_star os 
+    	left join account a on a.auth_id = os.auth_id
+    	where os.auth_id > 0
+    	order by os.update_at desc 
+    	limit 6
   </select>
   
   <select id="selectLabelByOsId" parameterType="java.lang.Long" resultType="OnlineStarLabel">

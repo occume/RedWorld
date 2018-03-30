@@ -37,7 +37,21 @@
 	<select id="provinceList" resultType="Province">  
 		select * from province
 	</select>
-
+	
+	<select id="bankcardList" resultType="com.redworld.model.response.WalletBankcardResponse">  
+		select wb.auth_id as authId, wb.card_owner as cardOwner, wb.card_number as cardNumber, wb.card_type_id as cardTypeId,
+			wbt.name as cardName, wbt.bank_name as bankName 
+			from wallet_bankcard wb
+			left join wallet_bankcard_type wbt on wbt.id = wb.card_type_id
+			where wb.auth_id = #{authId} 
+			<if test="cardTypeId != null">
+				and wb.card_type_id = #{cardTypeId}
+			</if>
+			<if test="cardNumber != null">
+				and wb.card_number = #{cardNumber}
+			</if>
+	</select>
+	
 	<update id="setGroup" >  
 		update account set group_id = #{groupId} where auth_id = #{authId}
 	</update>

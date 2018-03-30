@@ -119,7 +119,12 @@ public class JobController extends BaseController{
 		applyService.handleApply(applyId, ApplyStatus.ABOLISH);
     	return Result.OK;
 	}
-	
+	/**
+	 * 申请完成工作
+	 * @param request
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value = "/apply/complete", method = RequestMethod.POST)
 	@ResponseBody
     public Object applyComplete(HttpServletRequest request, @RequestBody Map<String, Long> map){
@@ -130,7 +135,7 @@ public class JobController extends BaseController{
 		if(apply == null || apply.getAuthId() != account.getAuthId()){
 			return Result.fail("Permission denied");
 		}
-		applyService.handleApply(applyId, ApplyStatus.COMPLETE);
+		applyService.handleApply(applyId, ApplyStatus.APPLY_COMPLETE);
     	return Result.OK;
 	}
 }
