@@ -105,7 +105,7 @@ public class OnlineStarService {
 	public List<JobRecommendOnlineStar> getRecommendList(
 			@Param("startRow")int startRow, 
 			@Param("cityId")int cityId){
-		return osMapper.selectRecommend(0, Constant.PAGE_SIZE, cityId);
+		return osMapper.selectRecommend(startRow, Constant.PAGE_SIZE, cityId);
 	}
 	
 	public List<OnlineStarRecommend> popularList(){

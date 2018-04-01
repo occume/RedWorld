@@ -91,4 +91,8 @@ public class CommonService {
 	public int createAlipayResult(AlipayResult result){
 		return alipayResultMapper.insert(result);
 	}
+	
+	public String getPhoneByAuthId(long authId){
+		return commonMapper.selectPhoneByAuthId(authId);
+	}
 }

@@ -128,10 +128,13 @@
   </select>
   
   <select id="selectRecommend" resultType="JobRecommendOnlineStar">
-    select acc.auth_id as authId, acc.avatar_image_name as avatarImageName, 
+    select os.id as osId, acc.auth_id as authId, acc.avatar_image_name as avatarImageName, 
     	acc.gender_id as genderId, acc.name from online_star os 
     	left join account acc on acc.auth_id = os.auth_id
-    	where os.auth_id > 0 acc.city_id = #{cityId}
+    	where os.auth_id > 0 
+    	<if test = "cityId != 0">
+    		and acc.city_id = #{cityId}
+    	</if>
 		limit #{startRow}, #{pageSize}
   </select>
   

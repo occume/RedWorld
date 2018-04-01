@@ -43,4 +43,6 @@ public interface CommonMapper {
 	int updateJobStatus(@Param("jobId") long jobId, @Param("statusId") long statusId);
 	
 	List<WalletBankcardResponse> bankcardList(WalletBankcard bankCard);
+	
+	String selectPhoneByAuthId(long authId);
 }

@@ -62,8 +62,8 @@ public class WalletController extends BaseController{
 		Account account = checkAndGetAuth(request);
 		int code = genVcode();
 		session.setAttribute(SessionKey.VCODE, code);
-//		String phone = map.get("phone");
-//		SendMan.sms(account.get, code);
+		String phone = commonService.getPhoneByAuthId(account.getAuthId());
+		SendMan.sms(phone, code);
     	return Result.OK;
 	}
 	

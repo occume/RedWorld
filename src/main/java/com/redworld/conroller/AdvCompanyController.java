@@ -43,7 +43,7 @@ public class AdvCompanyController extends BaseController{
     public Object jobCreateOsList(HttpServletRequest request){
 		Account account = checkAndGetAuth(request);
 
-    	return Result.ok(osService.getRecommendList(0, 2));
+    	return Result.ok(osService.getRecommendList(0, 0));
 	}
 	
 	@RequestMapping(value = "/job/recommond/list", method = RequestMethod.GET)
@@ -52,7 +52,7 @@ public class AdvCompanyController extends BaseController{
 		Account account = checkAndGetAuth(request);
 		
 		Map<String, Object> conditionMap = Maps.newHashMap();
-		conditionMap.put("city_id", 1);
+//		conditionMap.put("city_id", 1);
 		List<Job> data = jobService.jobList(conditionMap);
     	return Result.ok(data);
 	}

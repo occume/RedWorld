@@ -29,7 +29,7 @@ public class HomeController extends BaseController{
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
     public Object home(){
-    	return "h5/index";
+    	return "http://www.redworld.red";
 	}
 	
 	@RequestMapping(value = "/on-service", method = RequestMethod.GET)

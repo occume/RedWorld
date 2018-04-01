@@ -72,4 +72,9 @@
 	<update id="updateJobStatus">
 		update `job` set status_id = #{statusId} where id = #{jobId}
 	</update>
+	
+	<select id="selectPhoneByAuthId" parameterType="long" resultType="String">  
+		select phone from  auth where id = #{authId}
+	</select>
+	
 </mapper>

@@ -9,6 +9,9 @@ public class JobRecommendOnlineStar {
 	@JsonProperty("auth_id")
 	private long authId;
 	
+	@JsonProperty("os_id")
+	private long osId;
+	
 	private String name;
 	
 	@JsonProperty("avatar_image_name")
@@ -49,6 +52,12 @@ public class JobRecommendOnlineStar {
 	}
 	public void setHappenTime(Date happenTime) {
 		this.happenTime = happenTime;
+	}
+	public long getOsId() {
+		return osId;
+	}
+	public void setOsId(long osId) {
+		this.osId = osId;
 	}
 	
 }
